@@ -73,4 +73,13 @@ responses = {
     'custom_field': {
         'all': {'custom_fields': [{'name': 'Foo', 'id': 1}, {'name': 'Bar', 'id': 2}]},
     },
+    'custom_table': {
+        'get': {'custom_table': {'name': 'Asset Table', 'id': 1, 'author_id': 1}},
+        'all': {'custom_tables': [{'name': 'Asset Table', 'id': 1}, {'name': 'Equipment Table', 'id': 2}]},
+    },
+    'custom_entity': {
+        'get': {'custom_entity': {'name': 'Laptop #123', 'id': 1, 'custom_table_id': 1, 'author_id': 1}},
+        'all': {'custom_entities': [{'name': 'Laptop #123', 'id': 1}, {'name': 'Desktop #456', 'id': 2}]},
+        'filter': {'custom_entities': [{'name': 'Laptop #123', 'id': 1}, {'name': 'Desktop #456', 'id': 2}]},
+    },
 }

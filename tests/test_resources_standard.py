@@ -1826,3 +1826,53 @@ class StandardResourcesTestCase(BaseRedmineTestCase):
     def test_custom_field_url(self):
         self.response.json.return_value = responses['custom_field']['all']
         self.assertEqual(self.redmine.custom_field.all()[0].url, f'{self.url}/custom_fields/1/edit')
+
+    def test_custom_table_version(self):
+        self.assertEqual(self.redmine.custom_table.resource_class.redmine_version, (1, 0, 0))
+
+    def test_custom_table_get(self):
+        self.response.json.return_value = responses['custom_table']['get']
+        table = self.redmine.custom_table.get(1)
+        self.assertEqual(table.id, 1)
+        self.assertEqual(table.name, 'Asset Table')
+
+    def test_custom_table_eq(self):
+        self.response.json.return_value = responses['custom_table']['get']
+        return self._test_eq_helper(lambda: self.redmine.custom_table.get(1))
+
+    def test_custom_table_all(self):
+        self.response.json.return_value = responses['custom_table']['all']
+        tables = self.redmine.custom_table.all()
+        self.assertEqual(tables[0].id, 1)
+        self.assertEqual(tables[0].name, 'Asset Table')
+        self.assertEqual(tables[1].id, 2)
+        self.assertEqual(tables[1].name, 'Equipment Table')
+
+    def test_custom_entity_version(self):
+        self.assertEqual(self.redmine.custom_entity.resource_class.redmine_version, (1, 0, 0))
+
+    def test_custom_entity_get(self):
+        self.response.json.return_value = responses['custom_entity']['get']
+        entity = self.redmine.custom_entity.get(1)
+        self.assertEqual(entity.id, 1)
+        self.assertEqual(entity.name, 'Laptop #123')
+
+    def test_custom_entity_eq(self):
+        self.response.json.return_value = responses['custom_entity']['get']
+        return self._test_eq_helper(lambda: self.redmine.custom_entity.get(1))
+
+    def test_custom_entity_all(self):
+        self.response.json.return_value = responses['custom_entity']['all']
+        entities = self.redmine.custom_entity.all()
+        self.assertEqual(entities[0].id, 1)
+        self.assertEqual(entities[0].name, 'Laptop #123')
+        self.assertEqual(entities[1].id, 2)
+        self.assertEqual(entities[1].name, 'Desktop #456')
+
+    def test_custom_entity_filter(self):
+        self.response.json.return_value = responses['custom_entity']['filter']
+        entities = self.redmine.custom_entity.filter(custom_table_id=1)
+        self.assertEqual(entities[0].id, 1)
+        self.assertEqual(entities[0].name, 'Laptop #123')
+        self.assertEqual(entities[1].id, 2)
+        self.assertEqual(entities[1].name, 'Desktop #456')

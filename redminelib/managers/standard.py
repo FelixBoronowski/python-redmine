@@ -96,3 +96,26 @@ class NewsManager(ResourceManager):
             response = {self.container: self.redmine.news.filter(**self.params)[0].raw()}
 
         return super()._process_create_response(request, response)
+
+
+class CustomTableManager(ResourceManager):
+    pass
+
+
+class CustomEntityManager(ResourceManager):
+    def _construct_filter_url(self, path):
+        url = super()._construct_filter_url(path)
+
+        if 'custom_table_id' in self.params:
+            separator = '&' if '?' in url else '?'
+            url += f'{separator}custom_table_id={self.params["custom_table_id"]}'
+
+        return url
+
+    def _prepare_filter_request(self, request):
+        request = super()._prepare_filter_request(request)
+
+        if 'custom_table_id' in self.params:
+            request.pop('custom_table_id', None)
+
+        return request

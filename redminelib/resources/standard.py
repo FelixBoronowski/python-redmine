@@ -589,3 +589,68 @@ class CustomField(BaseResource):
             value = [value['tracker']]
 
         return super().encode(attr, value, manager)
+
+
+class CustomTable(BaseResource):
+    redmine_version = (1, 0, 0)
+    container_all = 'custom_tables'
+    container_one = 'custom_table'
+    container_create = 'custom_table'
+    container_update = 'custom_table'
+    query_all = '/custom_tables.json'
+    query_one = '/custom_tables/{}.json'
+    query_create = '/custom_tables.json'
+    query_update = '/custom_tables/{}.json'
+    query_delete = '/custom_tables/{}.json'
+    manager_class = managers.CustomTableManager
+
+    _repr = [['id', 'name']]
+    _includes = ['custom_fields', 'projects']
+    _relations = ['custom_entities']
+    _unconvertible = BaseResource._unconvertible + ['name', 'description', 'external_name']
+    _resource_map = {'author': 'User', 'custom_table_type': 'CustomTableType'}
+    _resource_set_map = {
+        'custom_fields': 'CustomField',
+        'projects': 'Project',
+        'custom_entities': 'CustomEntity',
+        'visible_roles': 'Role',
+        'editable_roles': 'Role'
+    }
+    _single_attr_id_map = {'author_id': 'author', 'custom_table_type_id': 'custom_table_type'}
+    _multiple_attr_id_map = {'visible_role_ids': 'visible_roles', 'editable_role_ids': 'editable_roles'}
+
+
+class CustomEntity(BaseResource):
+    redmine_version = (1, 0, 0)
+    container_all = 'custom_entities'
+    container_one = 'custom_entity'
+    container_filter = 'custom_entities'
+    container_create = 'custom_entity'
+    container_update = 'custom_entity'
+    query_all = '/custom_entities.json'
+    query_one = '/custom_entities/{}.json'
+    query_filter = '/custom_entities.json'
+    query_create = '/custom_entities.json'
+    query_update = '/custom_entities/{}.json'
+    query_delete = '/custom_entities/{}.json'
+    manager_class = managers.CustomEntityManager
+
+    _repr = [['id', 'name'], ['id']]
+    _includes = ['attachments', 'custom_entity_to_relations']
+    _relations = ['custom_entity_to_relations']
+    _unconvertible = BaseResource._unconvertible + ['name', 'notes']
+    _resource_map = {
+        'custom_table': 'CustomTable',
+        'author': 'User',
+        'project': 'Project'
+    }
+    _resource_set_map = {
+        'custom_fields': 'CustomField',
+        'attachments': 'Attachment',
+        'custom_entity_to_relations': 'CustomEntityRelation'
+    }
+    _single_attr_id_map = {
+        'custom_table_id': 'custom_table',
+        'author_id': 'author',
+        'project_id': 'project'
+    }

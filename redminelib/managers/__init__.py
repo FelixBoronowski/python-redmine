@@ -3,4 +3,5 @@ Defines manager classes.
 """
 
 from .base import ResourceManager
-from .standard import ProjectManager, IssueManager, FileManager, WikiPageManager, UserManager, NewsManager
+from .standard import (ProjectManager, IssueManager, FileManager, WikiPageManager, UserManager, NewsManager,
+                       CustomTableManager, CustomEntityManager)
